@@ -35,14 +35,14 @@ cd fedora-hyperland-by-yavkhr
 ```
 
 компоненты: `waybar`, `lock`, `binds`, `wallpaper`, `menu`, `fonts`.
-список с id — `./hyprkit --list`.
+список с id `./hyprkit --list`.
 
 ## использование
 
 после установки перезайди в сессию или запусти hyprland из tty.
 
-хоткеи: `super+return` — kitty, `super+space` — fuzzel, `super+q` — закрыть
-окно, `super+shift+s` — скриншот, `super+m` блокировка, `super+f12` — выход.
+хоткеи: `super+return`kitty, `super+space` — fuzzel, `super+q` закрыть
+окно, `super+shift+s` скриншот, `super+m` блокировка, `super+f12` выход.
 
 проверить, что всё на месте:
 
