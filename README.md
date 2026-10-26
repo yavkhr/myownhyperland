@@ -1,46 +1,76 @@
-# Мой конфиг Hyprland (Fedora 44)
+# hyprkit — мой конфиг Hyprland
 
-Только то, что делает рабочий стол: **бинды Hyprland**, **waybar**, **hyprlock**
-(мой кастомный локскрин) и меню **hyprwat**, которое вызывает waybar.
+Терминальный установщик: проверяет систему и Hyprland, показывает меню
+компонентов и ставит только то, что выбрал.
 
 ```
 git clone https://github.com/yavkhr/fedora-hyperland-by-yavkhr.git
 cd fedora-hyperland-by-yavkhr
-./install.sh
+./hyprkit
 ```
 
-Полный бэкап системы (пакеты, `/etc`, шрифты, всё остальное) лежит в приватном
-репозитории `myownfedora44`.
+**made by yavkhr**
 
-## Что внутри
+## Подходит не только Fedora
+
+Пакетный менеджер определяется сам: `dnf`, `pacman`, `apt`, `zypper`.
+На неизвестной системе скрипт не падает, а показывает, что поставить вручную.
+
+Требования: Linux + Hyprland. Для биндов в формате Lua нужен Hyprland 0.56+,
+на более старых автоматически ставится вариант `hyprland.conf`.
+
+## Меню
 
 ```
-source/
-├── config/
-│   ├── hypr/
-│   │   ├── hyprland.lua          # активный конфиг: бинды, раскладка us,ru, медиа-клавиши
-│   │   ├── hyprlock.conf.tmpl    # локскрин: аватар, blur, поле ввода пароля
-│   │   └── hyprpaper.conf.tmpl   # обои
-│   ├── waybar/                   # config.jsonc + style.css
-│   └── hyprwat/                  # тема меню + menus/powermenu.yaml
-├── bin/                          # waybar-*, lock-hyprland, take-screenshot, hyprwat
-├── assets/                       # my_ava.jpg, bg-blue.png
-└── fonts/NerdFontsSymbolsOnly/
+hyprkit 0.1                        made by yavkhr
+
+  Система   : Fedora Linux 44 (dnf)
+  Hyprland  : 0.56.2
+  Сессия    : запущена
+
+  1) Waybar — установлено
+  2) Lock screen — не установлено
+  3) Бинды — установлено
+  4) Обои — не установлено
+  5) Меню hyprwat — не установлено
+  6) Шрифты — не установлено
+
+  Номера через запятую, a — всё, q — выход
+  >
 ```
 
-`hyprland.conf` в репозиторий не входит: Hyprland читает `hyprland.lua`
-(все 61 бинд в рантайме зарегистрированы Lua).
+Состояние определяется по факту: конфиг на месте, бинарь найден, шрифт
+виден в `fc-list`. После установки пункт помечается как установленный.
 
-## `install.sh`
+## Команды
 
-- симлинкует `source/config/*` в `~/.config/`
-- генерирует `hyprlock.conf` / `hyprpaper.conf` с реальным `$HOME`
-- ставит скрипты и `hyprwat` в `~/.local/bin`
-- линкует аватар/обои в `~/Pictures`
-- ставит шрифты (Nerd Fonts Symbols + JetBrainsMono Nerd Font)
+```
+./hyprkit                 интерактивное меню
+./hyprkit --list          список компонентов и ID
+./hyprkit --install waybar lock
+```
 
-Флаги: `-y`, `--no-fonts`. `sudo` не нужен, старые файлы бэкапятся в
-`~/.hypr-config-backup-<дата>`.
+## Компоненты
+
+| ID | Что ставит | Куда |
+|---|---|---|
+| `waybar` | панель: раскладка, VPN/Wi-Fi, звук, температуры, память, питание + скрипты | `~/.config/waybar`, `~/.local/bin` |
+| `lock` | мой hyprlock: аватар, blur, поле ввода пароля | `~/.config/hypr/hyprlock.conf`, `~/Pictures` |
+| `binds` | бинды и настройки Hyprland (`hyprland.lua` или `hyprland.conf`) + лончеры | `~/.config/hypr`, `~/.local/bin` |
+| `wallpaper` | обои для hyprpaper | `~/.config/hypr/hyprpaper.conf`, `~/Pictures` |
+| `menu` | hyprwat: Wi-Fi, выбор языка, power-меню | `~/.config/hyprwat`, `~/.local/bin` |
+| `fonts` | Nerd Fonts Symbols + JetBrainsMono Nerd Font | `~/.local/share/fonts` |
+
+Компонент сам проверяет зависимости (`waybar`, `hyprlock`, `hyprpaper`,
+`hyprland`) и предлагает поставить недостающие через пакетный менеджер.
+
+## Что происходит с файлами
+
+- Конфиги симлинкуются в `~/.config` — правки сразу попадают в клонированный репозиторий.
+- `hyprlock.conf` и `hyprpaper.conf` генерируются из шаблонов с реальным `$HOME`.
+- Всё, что будет перезаписано, уезжает в `~/.hyprkit-backup-<дата>`.
+- Вывод пакетных менеджеров пишется в `~/.hyprkit.log`.
+- Повторный запуск безопасен.
 
 ## После установки
 
@@ -50,20 +80,14 @@ pkill waybar; waybar &
 ```
 
 Бинды: `Super+Return` — kitty, `Super+Space` — fuzzel, `Super+Q` — killactive,
-`Super+E` — exit, `Super+S` — скриншот, `Super+M` — блокировка.
+`Super+Shift+S` — скриншот, `Super+M` — блокировка, `Super+F12` — выход.
 
-## Зависимости
+## Ограничения
 
-`hyprland`, `waybar`, `hyprlock`, `hyprpaper`, `kitty`, `fuzzel`, `grim`, `slurp`,
-`wl-clipboard`, `nmcli` (NetworkManager), `wpctl`/`pavucontrol` (PipeWire).
-
-## hyprwat
-
-Wayland-меню (Wi-Fi, выбор языка, power-меню), бинарь `0.11.5` лежит в
-`source/bin/hyprwat`. Исходники: <https://github.com/zackb/hyprwat>.
-
-`menus/powermenu.yaml` пока ни к чему не привязан — можно повесить так:
-
-```
-bind = SUPER, X, exec, hyprwat --custom ~/.config/hyprwat/menus/powermenu.yaml
-```
+- `hyprwat` — готовый бинарь только для Linux x86_64.
+- JetBrainsMono Nerd Font качается с GitHub (~130 МБ), без сети поставится
+  только пакет из репозитория.
+- Скрипты лончеров (`viber`, `telegram`, `obsidian`) — обёртки под мои пути;
+  поправь под себя в `~/.local/bin`.
+- Полный бэкап системы (пакеты, `/etc`, настройки драйверов) лежит в приватном
+  репозитории `myownfedora44`.

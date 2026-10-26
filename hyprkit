@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG="$HOME/.hyprkit.log"
+BACKUP_DIR="$HOME/.hyprkit-backup-$(date +%Y%m%d-%H%M%S)"
+
+. "$ROOT/lib/detect.sh"
+. "$ROOT/lib/ui.sh"
+. "$ROOT/lib/files.sh"
+. "$ROOT/lib/deps.sh"
+. "$ROOT/lib/components.sh"
+
+detect_system
+load_components
+
+list_components() {
+    local dir
+    for dir in "${COMPONENTS[@]}"; do
+        printf '%-10s %s\n' "$(comp_var "$dir" ID)" "$(comp_var "$dir" NAME)"
+    done
+}
+
+install_all() {
+    local dir
+    for dir in "${COMPONENTS[@]}"; do
+        install_component "$dir"
+    done
+}
+
+install_args() {
+    local arg dir
+    for arg in "$@"; do
+        dir="$(comp_by_name "$arg")"
+        if [ -z "$dir" ]; then
+            printf '  Неизвестный компонент: %s\n' "$arg"
+            continue
+        fi
+        install_component "$dir"
+    done
+}
+
+interactive() {
+    local ans n dir
+    while :; do
+        print_header
+        print_menu
+        print_prompt
+        read -r ans || return 0
+        case "$ans" in
+            q|Q|'') return 0 ;;
+            a|A|all) install_all ;;
+            *)
+                for n in ${ans//,/ }; do
+                    n="${n//[^0-9]/}"
+                    [ -n "$n" ] || continue
+                    dir="$(comp_by_number "$n")" || continue
+                    install_component "$dir"
+                done
+                ;;
+        esac
+        printf '\n'
+    done
+}
+
+case "${1:-}" in
+    --list)
+        list_components
+        ;;
+    --install)
+        shift
+        [ "$#" -gt 0 ] || { printf '  Укажи компоненты: hyprkit --install waybar lock\n'; exit 1; }
+        print_header
+        install_args "$@"
+        ;;
+    -h|--help)
+        printf 'hyprkit — конфиги Hyprland\n\n'
+        printf '  ./hyprkit                 меню\n'
+        printf '  ./hyprkit --list          список компонентов\n'
+        printf '  ./hyprkit --install ID..  поставить без меню\n'
+        printf '\n  made by yavkhr\n'
+        ;;
+    '')
+        interactive
+        ;;
+    *)
+        printf '  Неизвестный аргумент: %s\n' "$1"
+        exit 1
+        ;;
+esac

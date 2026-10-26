@@ -1,0 +1,4 @@
+#!/bin/sh
+/usr/bin/nmcli dev wifi rescan >/dev/null 2>&1 &
+
+exec $HOME/.local/bin/hyprwat --wifi
