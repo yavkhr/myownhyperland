@@ -1,0 +1,4 @@
+#!/bin/sh
+iface=$(iw dev 2>/dev/null | awk '$1 == "Interface" {print $2; exit}')
+if [ -n "$iface" ]; then rate=$(iw dev "$iface" link 2>/dev/null | awk '/tx bitrate/ {print $3 " " $4; exit}'); [ -n "$rate" ] && printf '{"text":"󰇚 %s","tooltip":"Wi‑Fi: %s"}\n' "$rate" "$rate" && exit; fi
+printf '{"text":"󰇚 --","tooltip":"Скорость Wi‑Fi недоступна"}\n'

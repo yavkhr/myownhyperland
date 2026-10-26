@@ -1,0 +1,2 @@
+#!/bin/bash
+$HOME/AppImages/obsidian.appimage >/tmp/obsidian.log 2>&1 &

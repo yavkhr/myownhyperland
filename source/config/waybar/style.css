@@ -1,0 +1,146 @@
+* {
+    font-family: "Noto Sans", "DejaVu Sans", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+    border: none;
+}
+
+window#waybar {
+    background: rgba(15, 18, 27, 0.94);
+    color: #dce7f5;
+    border: none;
+    border-radius: 14px;
+}
+
+#workspaces,
+#custom-power,
+#custom-reboot,
+#custom-lock,
+#hyprland-language,
+#pulseaudio,
+#network,
+#custom-vpn,
+#custom-wifi-speed,
+#temperature,
+#memory,
+#clock,
+#tray {
+    background: rgba(31, 40, 55, 0.95);
+    margin: 5px 3px;
+    padding: 0 11px;
+    border-radius: 9px;
+}
+
+#workspaces {
+    padding: 0 5px;
+}
+
+#custom-power, #custom-reboot, #custom-lock {
+    font-family: "Font Awesome 6 Free Solid", "Font Awesome 6 Free";
+    font-weight: 900;
+    padding: 0 10px;
+    color: #89b4fa;
+}
+
+#custom-power { color: #89b4fa; }
+#custom-reboot { color: #89b4fa; }
+#custom-lock { color: #89b4fa; }
+#custom-power { margin-left: 7px; }
+
+#custom-power:hover, #custom-reboot:hover, #custom-lock:hover,
+#custom-vpn:hover, #custom-wifi-speed:hover, #pulseaudio:hover {
+    background: #354e64;
+}
+
+#hyprland-language, #custom-vpn, #pulseaudio, #temperature, #memory, #clock {
+    font-family: "Font Awesome 6 Free Solid", "Font Awesome 6 Free", "Noto Sans";
+    font-weight: 900;
+}
+#clock { font-family: "Noto Sans", "DejaVu Sans", sans-serif; font-size: 15px; font-weight: 600; }
+#custom-gpu-temp, #custom-cpu-temp {
+    font-family: "Font Awesome 6 Free Solid", "Font Awesome 6 Free", "Noto Sans";
+    font-weight: 900;
+}
+#custom-gpu-temp { color: #89b4fa; }
+#custom-cpu-temp { color: #89b4fa; }
+#custom-gpu-temp, #custom-cpu-temp, #custom-memory { margin-left: 8px; margin-right: 8px; }
+#custom-language { color: #89b4fa; font-family: "Font Awesome 6 Free Solid", "Font Awesome 6 Free", "Noto Sans"; font-weight: 900; margin: 5px 2px; background: rgba(31, 40, 55, 0.95); padding: 0 7px; border-radius: 8px; }
+#custom-language:hover { background: #354e64; }
+#custom-memory { font-family: "Noto Sans", "DejaVu Sans", sans-serif; font-weight: 600; color: #89b4fa; }
+#custom-sep-gpu-cpu, #custom-sep-cpu-ram { color: #75869b; margin-left: 4px; margin-right: 4px; }
+#custom-vpn { font-family: "Symbols Nerd Font", "Symbols Nerd Font Mono"; }
+#hyprland-language { color: #89b4fa; }
+#custom-vpn { color: #89b4fa; font-size: 18px; }
+#pulseaudio { color: #f5c2e7; }
+#clock { color: #89dceb; }
+#temperature.gpu { color: #89b4fa; }
+#temperature.cpu { color: #89b4fa; }
+#memory { color: #f9e2af; }
+#custom-wifi-speed { color: #9de7ff; }
+#temperature { color: #89b4fa; }
+#memory { color: #89b4fa; }
+
+#workspaces button {
+    color: rgba(137, 180, 250, 0.55);
+    padding: 0 9px;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    transition: color 180ms ease;
+}
+
+#workspaces button.empty { color: rgba(137, 180, 250, 0.45); }
+
+#workspaces button.active { color: rgba(137, 180, 250, 0.85); }
+
+#workspaces button.focused { color: #89b4fa; }
+
+#workspaces button.urgent { color: #f38ba8; }
+
+#workspaces button:hover {
+    color: #dce7f5;
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+#workspaces button:focus,
+#workspaces button.focused:hover,
+#workspaces button.active:hover {
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+#pulseaudio {
+    color: #89b4fa;
+}
+
+#network {
+    color: #89b4fa;
+}
+
+#cpu {
+    color: #89b4fa;
+}
+
+#clock {
+    color: #e0efff;
+    font-weight: bold;
+}
+
+#tray {
+    padding: 0 9px;
+}
+
+tooltip {
+    background: #151d29;
+    color: #e0efff;
+    border: 1px solid #78d7ff;
+    border-radius: 8px;
+}

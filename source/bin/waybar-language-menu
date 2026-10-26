@@ -1,0 +1,7 @@
+#!/bin/sh
+
+choice=$($HOME/.local/bin/hyprwat 'us:English' 'ru:Русский' 2>/dev/null)
+case "$choice" in
+    us|English|*English*) hyprctl switchxkblayout current 0 ;;
+    ru|Русский|*Русский*) hyprctl switchxkblayout current 1 ;;
+esac

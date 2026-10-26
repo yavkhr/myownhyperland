@@ -1,0 +1,10 @@
+#!/bin/sh
+if command -v nvidia-smi >/dev/null 2>&1; then
+    value=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null | head -n1 | tr -d ' ')
+    case "$value" in
+        ''|*[!0-9]*) printf '?' ;;
+        *) printf '%s' "$value" ;;
+    esac
+else
+    printf '?'
+fi

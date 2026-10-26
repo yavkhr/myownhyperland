@@ -1,0 +1,2 @@
+#!/bin/sh
+nohup /usr/bin/chatgpt "$@" >/dev/null 2>&1 </dev/null &

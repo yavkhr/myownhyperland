@@ -1,0 +1,14 @@
+#!/bin/sh
+for hw in /sys/class/hwmon/hwmon*; do
+    [ "$(cat "$hw/name" 2>/dev/null)" = "coretemp" ] || continue
+    value=$(awk -F= '/temp[0-9]+_input/{print $2; exit}' "$hw"/temp*_input 2>/dev/null)
+    [ -n "$value" ] && awk -v t="$value" 'BEGIN {printf "%.0f", t/1000}' && exit
+done
+for zone in /sys/class/thermal/thermal_zone*/temp; do
+    value=$(cat "$zone" 2>/dev/null)
+    case "$value" in
+        ''|*[!0-9]*) continue ;;
+        *) awk -v t="$value" 'BEGIN {printf "%.0f", t/1000}'; exit ;;
+    esac
+done
+printf '?'

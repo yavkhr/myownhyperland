@@ -1,0 +1,62 @@
+title: "Система"
+
+sections:
+  - type: separator
+
+  - type: button
+    label: "Заблокировать"
+    action:
+      type: execute
+      command: "hyprlock"
+      close_on_success: true
+
+  - type: button
+    label: "Выйти из сеанса"
+    action:
+      type: execute
+      command: "loginctl terminate-session $XDG_SESSION_ID"
+      close_on_success: true
+
+  - type: separator
+
+  - type: button
+    label: "Спящий режим"
+    action:
+      type: execute
+      command: "systemctl suspend"
+      close_on_success: true
+
+  - type: button
+    label: "Перезагрузить"
+    action:
+      type: execute
+      command: "systemctl reboot"
+      close_on_success: true
+
+  - type: button
+    label: "Выключить"
+    action:
+      type: execute
+      command: "systemctl poweroff"
+      close_on_success: true
+
+  - type: separator
+
+  - type: button
+    label: "Отмена"
+    action:
+      type: cancel
+
+shortcuts:
+  - key: "L"
+    action: { type: execute, command: "hyprlock", close_on_success: true }
+  - key: "E"
+    action: { type: execute, command: "loginctl terminate-session $XDG_SESSION_ID", close_on_success: true }
+  - key: "S"
+    action: { type: execute, command: "systemctl suspend", close_on_success: true }
+  - key: "R"
+    action: { type: execute, command: "systemctl reboot", close_on_success: true }
+  - key: "P"
+    action: { type: execute, command: "systemctl poweroff", close_on_success: true }
+  - key: "Escape"
+    action: { type: cancel }

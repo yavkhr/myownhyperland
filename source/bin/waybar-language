@@ -1,0 +1,6 @@
+#!/bin/sh
+layout=$(hyprctl devices -j 2>/dev/null | jq -r '[.keyboards[] | select(.main == true)][0].active_keymap // "English"')
+case "$layout" in
+    *Russian*|*ru*|*RU*) printf 'RU' ;;
+    *) printf 'EN' ;;
+esac

@@ -1,0 +1,2 @@
+#!/bin/sh
+nohup /opt/viber/Viber "$@" >/dev/null 2>&1 </dev/null &

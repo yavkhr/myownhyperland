@@ -1,0 +1,15 @@
+#!/bin/sh
+current=$(nmcli -t -f IN-USE,SSID,SIGNAL,SECURITY dev wifi list 2>/dev/null | awk -F: '$1 == "*" {print $2 "  |  signal " $3 "%  |  " ($4 == "" ? "open" : $4); exit}')
+[ -z "$current" ] && current="Not connected"
+list=$(nmcli -t -f SSID,SIGNAL,SECURITY dev wifi list 2>/dev/null | awk -F: 'NF >= 2 && $1 != "" {printf "%s  |  signal %s%%  |  %s\n", $1, $2, ($3 == "" ? "open" : $3)}' | sort -u)
+choice=$(printf "CURRENT: %s\n\n%s\n" "$current" "$list" | fuzzel --dmenu --prompt "Wi-Fi  " --width 55 --lines 12)
+[ -z "$choice" ] && exit 0
+case "$choice" in
+  CURRENT:*) exit 0 ;;
+esac
+ssid=${choice%%  |*}
+if nmcli dev wifi connect "$ssid" >/dev/null 2>&1; then
+  notify-send "Wi-Fi" "Connected to $ssid"
+else
+  notify-send "Wi-Fi" "Could not connect to $ssid. It may require a password."
+fi

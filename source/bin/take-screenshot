@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -eu
+
+dir="$HOME/Pictures/Screenshots"
+mkdir -p "$dir"
+file="$dir/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
+
+if command -v grim >/dev/null 2>&1 && command -v slurp >/dev/null 2>&1; then
+    geometry="$(slurp)"
+    [ -n "$geometry" ] && grim -g "$geometry" "$file"
+else
+    notify-send "Не установлены grim и slurp" "Выполни: sudo dnf install -y grim slurp" 2>/dev/null || true
+    exit 1
+fi
+
+if command -v wl-copy >/dev/null 2>&1; then
+    wl-copy < "$file"
+else
+    notify-send "Скриншот сохранён, но не скопирован" "Установи: sudo dnf install -y wl-clipboard" 2>/dev/null || true
+fi
+
+notify-send "Скриншот сохранён" "$file" 2>/dev/null || true
